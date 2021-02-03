@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <unistd.h> // including sbrk()
+
+
+// Copy from the PDF 
+//First Fit malloc/free
+void *ff_malloc(size_t size);
+void ff_free(void *ptr);
+
+//Best Fit malloc/free
+void *bf_malloc(size_t size);
+void bf_free(void *ptr);
+
+//Performance study report
+unsigned long get_data_segment_size();
+unsigned long get_data_segment_size_free_space_size();
+
+// My own MetaData and ListNode 
+typedef struct ListNode{
+  size_t size;
+  int free;
+  struct ListNode *next;
+  //struct ListNode *mem_next;
+}node_t;
+
+// FreeList head
+node_t *head = NULL;
+
+size_t data_segment_size = 0;
+size_t free_space_segment_size = 0;
