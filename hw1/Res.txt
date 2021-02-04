@@ -1,0 +1,32 @@
+i7-6700HQ
+
+FF
+cales@cales-VirtualBox:~/Desktop/ECE_650/hw1/my_malloc/alloc_policy_tests$ ./equal_size_allocs
+Execution Time = 37.260579 seconds
+Fragmentation  = 0.450000
+
+cales@cales-VirtualBox:~/Desktop/ECE_650/hw1/my_malloc/alloc_policy_tests$ ./large_range_rand_allocs
+Execution Time = 115.189351 seconds
+Fragmentation  = 0.094559
+
+cales@cales-VirtualBox:~/Desktop/ECE_650/hw1/my_malloc/alloc_policy_tests$ ./small_range_rand_allocs
+data_segment_size = 3707312, data_segment_free_space = 275504
+Execution Time = 35.572876 seconds
+Fragmentation  = 0.074314
+
+
+BF
+
+cales@cales-VirtualBox:~/Desktop/ECE_650/hw1/my_malloc/alloc_policy_tests$ ./equal_size_allocs
+Execution Time = 36.448824 seconds
+Fragmentation  = 0.450000
+
+cales@cales-VirtualBox:~/Desktop/ECE_650/hw1/my_malloc/alloc_policy_tests$ ./small_range_rand_allocs
+data_segment_size = 3543328, data_segment_free_space = 93872
+Execution Time = 8.637845 seconds
+Fragmentation  = 0.026493
+
+cales@cales-VirtualBox:~/Desktop/ECE_650/hw1/my_malloc/alloc_policy_tests$ ./large_range_rand_allocs
+Execution Time = 139.230253 seconds
+Fragmentation  = 0.042504
+
