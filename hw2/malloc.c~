@@ -1,0 +1,105 @@
+#include "malloc.h"
+
+void add_to_List(node_t *ptr){
+  if(ptr == NULL) return;
+  if(head == NULL){
+    head = ptr;
+    free_space_segment_size += ptr->size + sizeof(node_t);
+    return;
+  }
+  
+  ptr->next = head;
+  head = ptr;
+  free_space_segment_size += ptr->size + sizeof(node_t);
+
+  node_t *p = head;
+  size_t b_ptr = ptr->size + sizeof(node_t);
+  size_t n_ptr = (size_t)ptr;
+  //mem address of the next;
+  size_t next = n_ptr + b_ptr;
+  // Iterate to find the suitable location in a sorted list
+  while(p != NULL && p->next != NULL){
+    //size_t bytes = p->size + sizeof(node_t);
+    void * p_temp = p->next;
+    if(p_temp == NULL) break;
+    size_t temp = (size_t) p_temp;
+    // If I find the next node, then break
+    if(temp >= next){
+      break;
+    }
+    p = p_temp;
+  }
+
+  // if the ptr is the highest address
+  if(p->next == NULL){
+    head = head->next;
+    ptr->next = p->next;
+    p->next = ptr;
+  }
+  else if(p == head){
+    node_t * n_ptr_next = (node_t*)((char*)ptr + ptr->size + sizeof(node_t));
+    if(n_ptr_next == ptr->next){
+      ptr->size += (sizeof(node_t) + ptr->next->size);
+      ptr->next = ptr->next->next;
+    }
+    return;
+  }
+  else{
+    size_t bytes = p->size + sizeof(node_t);
+    size_t temp = (size_t)p;
+    // Check if the two are adjacent the former one and the ptr
+    if(temp + bytes == (size_t)ptr){
+      p->size += (b_ptr);
+      head = head->next;
+      node_t * p_next = p->next;
+      node_t* n_p_next = (node_t*)((char*)p + p->size + sizeof(node_t));
+      if(n_p_next == p->next){
+        // Modify the size and the next pointer
+        p->size += (sizeof(node_t) + p_next->size);
+        p->next = p_next->next;
+      }
+    }
+    else{
+      head = head->next;
+      ptr->next = p->next;
+      p->next = ptr;
+      // check if we need to merge the next one
+      node_t * n_ptr_next = (node_t*)((char*)ptr + ptr->size + sizeof(node_t));
+      if(n_ptr_next == ptr->next){
+        //modify the size and the next pointer
+        ptr->size += (sizeof(node_t) + ptr->next->size);
+        ptr->next = ptr->next->next;
+      }
+    }
+  }
+}
+
+node_t* split(node_t * ptr, size_t size){
+  node_t * res = (node_t *)((char *)ptr + ptr->size - size );
+  res->size = size;
+  //  res->free = 0;
+  res->next = NULL;
+  ptr->size = ptr->size - size - sizeof(node_t);
+  // In malloc func we will return res + 1
+  return res;
+}
+
+node_t* find_bf(size_t size){
+  node_t * curr = head;
+  node_t * res = NULL;
+  //unsigned int min = 65535;
+  
+  while(curr != NULL){
+    if(curr->size >size + sizeof(node_t)){
+      if(res == NULL || curr->size < res->size){
+	res = curr;
+      }
+    }
+    else if(curr->size >= size){
+      return curr;
+    }
+    curr = curr->next;
+  }
+  return res;
+}
+
