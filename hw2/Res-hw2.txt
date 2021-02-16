@@ -1,0 +1,26 @@
+i7-6700HQ
+
+
+
+lock
+
+cales@cales-VirtualBox:~/ECE_650/hw2/thread_tests$ ./thread_test_measurement
+No overlapping allocated regions found!
+Test passed
+Execution Time = 2.002969 seconds
+Data Segment Size = 44131088 bytes
+
+This is the best one, And the 30 times average among 2.5s
+
+
+
+No_Lock
+
+cales@cales-VirtualBox:~/ECE_650/hw2/thread_tests$ ./thread_test_measurement
+No overlapping allocated regions found!
+Test passed
+Execution Time = 0.727707 seconds
+Data Segment Size = 41972784 bytes
+
+THis is the best one, and the 30 times average about 1.2s
+

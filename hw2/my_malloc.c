@@ -110,6 +110,7 @@ node_t* find_bf(size_t size, node_t ** head_p){
   return res;
 }
 
+/*
 void * sbrkChoice(size_t actual_size, int sbrk_lock){
   node_t * res = NULL;
   if(sbrk_lock == 0){
@@ -121,7 +122,7 @@ void * sbrkChoice(size_t actual_size, int sbrk_lock){
       pthread_mutex_unlock(&lock);
     }
   return res;
-}
+}*/
 
 void * bf_malloc(size_t size, node_t ** head_p, int sbrk_lock){
   node_t *res = NULL;
@@ -130,7 +131,14 @@ void * bf_malloc(size_t size, node_t ** head_p, int sbrk_lock){
   node_t *bf = find_bf(size, head_p);
   if(*head_p == NULL || bf == NULL){
 
-    res = sbrkChoice(actual_size, sbrk_lock);
+    if(sbrk_lock == 0){
+      res = sbrk(actual_size);
+    }
+    else{
+      pthread_mutex_lock(&lock);
+      res = sbrk(actual_size);
+      pthread_mutex_unlock(&lock);
+    }
     res->size = size;
     //res->free = 0;
     res->next = NULL;
@@ -148,7 +156,7 @@ void * bf_malloc(size_t size, node_t ** head_p, int sbrk_lock){
       res = bf;
       free_space_segment_size -= (bf->size + sizeof(node_t));
       // Remove the node from the List
-      node_t * p = head;
+      node_t * p = *head_p;
       if(p == res){
         *head_p = (*head_p)->next;
         //res->free = 0;
@@ -184,15 +192,11 @@ void ts_free_lock(void * ptr){
   pthread_mutex_unlock(&lock);
 }
 
-void * ts_malloc_unlock(size_t size){
-  pthread_mutex_lock(&lock);
+void * ts_malloc_nolock(size_t size){
   int sbrk_lock = 1;
   void * p = bf_malloc(size, &head_tls, sbrk_lock);
-  pthread_mutex_unlock(&lock);
   return p;
 }
-void ts_free_unlock(void * ptr){
-  pthread_mutex_lock(&lock);
+void ts_free_nolock(void * ptr){
   bf_free(ptr, &head_tls);
-  pthread_mutex_unlock(&lock);
 }

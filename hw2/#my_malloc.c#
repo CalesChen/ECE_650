@@ -1,4 +1,4 @@
-#include "malloc.h"
+#include "my_malloc.h"
 
 void add_to_List(node_t *ptr, node_t ** head_p){
   if(ptr == NULL) return;
@@ -111,7 +111,7 @@ node_t* find_bf(size_t size, node_t ** head_p){
 }
 
 void * sbrkChoice(size_t actual_size, int sbrk_lock){
-  node_t * res = NULL;
+  node_t * res ;
   if(sbrk_lock == 0){
       res = sbrk(actual_size);
     }
@@ -184,15 +184,11 @@ void ts_free_lock(void * ptr){
   pthread_mutex_unlock(&lock);
 }
 
-void * ts_malloc_unlock(size_t size){
-  pthread_mutex_lock(&lock);
+void * ts_malloc_nolock(size_t size){
   int sbrk_lock = 1;
   void * p = bf_malloc(size, &head_tls, sbrk_lock);
-  pthread_mutex_unlock(&lock);
   return p;
 }
-void ts_free_unlock(void * ptr){
-  pthread_mutex_lock(&lock);
+void ts_free_nolock(void * ptr){
   bf_free(ptr, &head_tls);
-  pthread_mutex_unlock(&lock);
 }
