@@ -1,0 +1,28 @@
+#include <iostream>
+#include <cstring>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
+
+using namespace std;
+
+int server_start(const char * port){
+
+  int status;
+  int socket_fd;
+  struct addrinfo host_info;
+  struct addrinfo* host_info_list;
+  const char* hostname = NULL;
+
+  memset(&host_info, 0, sizeof(host_info));
+
+  host_info.ai_family = AF_UNSPEC;
+  host_info.ai_socktype = SOCK_STREAM;
+  host_info.ai_flags = AI_PASSIVE;
+  status = getaddrinfo(hostname, port, &host_info, &host_info_list);
+  if(status != 0){
+    cerr << "Error: cannot get address info for host" <<endl;
+    cerr << " (" << hostname<<","<<port<<")"<<endl;
+    exit(EXIT_FAILURE);
+  }
+}
