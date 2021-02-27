@@ -35,9 +35,12 @@ public:
     
     int neighbor_port;
     char neighbor_ip[100];
-    recv(from_master_fd, &neighbor_port, sizeof(neighbor_ip), MSG_WAITALL);
+    recv(from_master_fd, &neighbor_port, sizeof(neighbor_ip), 0);
+
     cout << neighbor_port<<endl;
-    recv(from_master_fd, &neighbor_ip, sizeof(neighbor_ip), MSG_WAITALL);
+
+    recv(from_master_fd, &neighbor_ip, sizeof(neighbor_ip), 0);
+
     cout << neighbor_ip << " and port is "<<neighbor_port;
     // connect to the right and listen to the left. 
     char neighbor_port_str[10];
