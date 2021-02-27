@@ -60,6 +60,7 @@ public:
       fds.push_back(player_master_fd);
       ips.push_back(player_ip);
       ports.push_back(player_port);
+      cout<< "Player "<< i << " is ready to play "<< endl;
     }
 
     // We need to init all of the players then make them connect to each other

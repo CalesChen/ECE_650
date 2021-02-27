@@ -25,7 +25,7 @@ public:
   Player(char ** argv){
     from_master_fd = client_start(argv[1], argv[2]);
     recv(from_master_fd, &player_id, sizeof(player_id),0);
-    recv(from_master_fd, &player_id, sizeof(num_players), 0);
+    recv(from_master_fd, &num_players, sizeof(num_players), 0);
 
     player_fd = server_start("");
     int player_port = get_port(player_fd);
