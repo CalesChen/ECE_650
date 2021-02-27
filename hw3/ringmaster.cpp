@@ -47,19 +47,20 @@ public:
       int player_port;
       string player_ip;
 
-      int player_master_fd = server_recv(master_fd, &player_ip);
-
+      fds[i] = server_recv(master_fd, &ips[i]);//&player_ip);
+      //cout << player_ip<<endl;
       // Send the ID and num_players
-      send(player_master_fd, &i, sizeof(i), 0);
-      send(player_master_fd, &num_players, sizeof(num_players), 0);
+      send(fds[i], &i, sizeof(i), 0);
+      send(fds[i], &num_players, sizeof(num_players), 0);
 
       // Receive the listen port
 
-      recv(player_master_fd, &player_port, sizeof(player_port), 0);
-
-      fds.push_back(player_master_fd);
-      ips.push_back(player_ip);
-      ports.push_back(player_port);
+      recv(fds[i], &ports[i], sizeof(ports[i]), 0);
+      //cout << player_port<<endl;
+      //fds.push_back(player_master_fd);
+      //ips.push_back(player_ip);
+      //ports.push_back(player_port);
+      //cout<< fds[i]<<ips[i]<<ports[i]<<endl;
       cout<< "Player "<< i << " is ready to play "<< endl;
     }
 
@@ -78,7 +79,7 @@ public:
       send(fds[i], &neighborPort, sizeof(neighborPort),0);
       send(fds[i], &neighbor_ip, sizeof(neighbor_ip),0);
 
-      cout << neighborId << "  " << neighborPort << "  " << neighbor_ip << endl;
+      //cout << neighborId << "  " << neighborPort << "  " << neighbor_ip << endl;
     }
   }
 
@@ -123,7 +124,7 @@ public:
     for(int i = 0 ; i < potato.count ; i++){
       cout<<potato.path[i];
       if(i != potato.count - 1){
-        cout << ","<<endl;
+        cout << ",";
       }
       else{
         cout<<endl;
