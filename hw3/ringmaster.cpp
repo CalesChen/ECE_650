@@ -69,7 +69,7 @@ public:
       // Connect to the right
       int neighborId = i == num_players - 1? 0 : i + 1 ;
       int neighborPort = ports[neighborId];
-      char neighbor_ip[50];
+      char neighbor_ip[100];
 
       memset(neighbor_ip, 0, sizeof(neighbor_ip));
       // Isolate the original data
@@ -77,6 +77,8 @@ public:
 
       send(fds[i], &neighborPort, sizeof(neighborPort),0);
       send(fds[i], &neighbor_ip, sizeof(neighbor_ip),0);
+
+      cout << neighborId << "  " << neighborPort << "  " << neighbor_ip << endl;
     }
   }
 
