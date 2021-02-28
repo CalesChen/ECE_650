@@ -39,7 +39,7 @@ public:
 
     //cout << neighbor_port<<endl;
 
-    recv(from_master_fd, &neighbor_ip, sizeof(neighbor_ip), 0);
+    recv(from_master_fd, neighbor_ip, sizeof(neighbor_ip), 0);
 
     //cout << neighbor_ip << " and port is "<<neighbor_port;
     
