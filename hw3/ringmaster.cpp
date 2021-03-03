@@ -23,7 +23,7 @@ public:
     num_players = atoi(argv[2]);
     num_hops = atoi(argv[3]);
 
-    if(num_players <= 0){
+    if(num_players <= 1){
       cerr<<"The num_players is "<< num_players << ", which is illegal."<<endl;
       exit(EXIT_FAILURE);
     }
