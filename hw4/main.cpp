@@ -52,7 +52,7 @@ void playerInitiation(string filename, connection * C){
       value << line;
       value >> player_id >> team_id >> jersey_num >> first_name >> last_name >> mpg >> ppg>>rpg>>apg>>spg>>bpg;
       add_player(C, team_id, jersey_num, first_name, last_name, mpg, ppg, rpg, apg, spg,bpg);
-      cout<<spg;
+      //cout<<spg;
     }
     ifs.close();
   }
@@ -130,7 +130,7 @@ int main (int argc, char *argv[])
     //Parameters: database name, user name, user password
     C = new connection("dbname=ACC_BBALL user=postgres password=passw0rd");
     if (C->is_open()) {
-      //cout << "Opened database successfully: " << C->dbname() << endl;
+      cout << "Opened database successfully: " << C->dbname() << endl;
     } else {
       cout << "Can't open database" << endl;
       return 1;
@@ -152,7 +152,7 @@ int main (int argc, char *argv[])
   table.push_back("color");
 
   dropMultipleTable(table, C);
-  //cout<<"Success!"<<endl;
+  cout<<"Success!"<<endl;
 
   tableInitiation("initiation.sql", C);
   stateInitiation("state.txt", C);
@@ -161,6 +161,7 @@ int main (int argc, char *argv[])
   teamInitiation("team.txt", C);
   playerInitiation("player.txt", C);
   
+  cout<<"Initia Success!"<<endl;
   exercise(C);
 
 

@@ -10,7 +10,7 @@ void add_player(connection *C, int team_id, int jersey_num, string first_name, s
     sql << "INSERT INTO player (team_id, jersey_num, first_name, last_name,mpg, ppg, rpg, apg, spg, bpg) VALUES (" 
             <<team_id << "," << jersey_num << ","<< W.quote(first_name)<< "," << W.quote(last_name)<< ","<<mpg<< ","<<ppg<< ","<<rpg<< ","<<apg<< ","<<spg<< ","
             <<bpg<<");";
-    cout<<spg<<endl;
+    //cout<<spg<<endl;
     W.exec(sql.str());
     W.commit();
 }
@@ -117,6 +117,7 @@ void query2(connection *C, string team_color)
     sql<< "SELECT team.name " <<
           "FROM team, color " <<
           "WHERE team.color_id = color.color_id and color.name = " + W.quote(team_color) + ";";
+    W.commit();
     nontransaction N(*C);
     result R(N.exec(sql.str()));
     cout << "NAME\n";
@@ -131,9 +132,9 @@ void query3(connection *C, string team_name)
     work W(*C);
     stringstream sql;
     sql << "SELECT player.first_name, player.last_name "
-        << "FROM player team "
+        << "FROM player , team "
         << "WHERE player.team_id = team.team_id and team.name = " + W.quote(team_name) + " ORDER BY ppg DESC;";
-
+    W.commit();
     nontransaction N(*C);
     result R(N.exec(sql.str()));
     cout << "FIRST_NAME LAST_NAME\n";
@@ -152,14 +153,14 @@ void query4(connection *C, string team_state, string team_color)
         << "FROM player, team, state, color "
         << "WHERE player.team_id = team.team_id AND team.state_id = state.state_id AND team.color_id = color.color_id AND state.name = "
         << W.quote(team_state) << " AND color.name = "<<W.quote(team_color)<<';';
-
+    W.commit();
     nontransaction N(*C);
     result R(N.exec(sql.str()));
     // In the example, the jersey_NUm is Uniform_num. So I just copy that.
     cout<< "FIRST_NAME LAST_NAME UNIFORM_NUM\n";
 
     for(auto c = R.begin() ; c != R.end() ; ++c){
-        cout << c[0].as<int>() << " " <<c[1].as<int>() << " " << c[2].as<int>() <<"\n";
+        cout << c[0].as<string>() << " " <<c[1].as<string>() << " " << c[2].as<int>() <<"\n";
     }
 }
 
@@ -173,7 +174,7 @@ void query5(connection *C, int num_wins)
         << "FROM player, team "
         << "WHERE player.team_id = team.team_id AND team.wins > " 
         << num_wins<<";";
-
+    W.commit();
     nontransaction N(*C);
     result R(N.exec(sql.str()));
     // In the example, the jersey_NUm is Uniform_num. So I just copy that.
