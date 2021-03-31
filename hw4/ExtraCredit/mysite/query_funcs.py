@@ -1,19 +1,19 @@
 
-from .models import State, Color, Team, Player
+from orm.models import State, Color, Team, Player
 
 def add_player(team_id, jersey_num, first_name, last_name, mpg, ppg, rpg, apg, spg, bpg):
-    Player.object.get_or_create(team_id=Team.object.get(team_id = team_id), jersey_num=jersey_num , first_name=first_name, last_name=last_name, mpg=mpg, ppg=ppg, rpg=rpg, apg=apg, spg=spg, bpg=bpg)
+    Player.objects.get_or_create(team_id=Team.objects.get(team_id = team_id), jersey_num=jersey_num , first_name=first_name, last_name=last_name, mpg=mpg, ppg=ppg, rpg=rpg, apg=apg, spg=spg, bpg=bpg)
     return
 
 def add_team(name, state_id, color_id, wins, losses):
-    Team.object.get_or_create(name=name,state_id=State.object.get(state_id=state_id), color_id = Color.object.get(color_id=color_id), wins = wins, losses =losses)
+    Team.objects.get_or_create(name=name,state_id=State.objects.get(state_id=state_id), color_id = Color.objects.get(color_id=color_id), wins = wins, losses =losses)
     return
 
 def add_state(name):
-    State.object.get_or_create(name = name)
+    State.objects.get_or_create(name = name)
 
 def add_color(name):
-    Color.object.get_or_create(name=name)
+    Color.objects.get_or_create(name=name)
     
 def query1( use_mpg,  min_mpg,  max_mpg,
              use_ppg,  min_ppg,  max_ppg,

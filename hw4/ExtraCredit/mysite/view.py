@@ -8,10 +8,10 @@ import django
 
 django.setup()
 
-from .models import State, Color, Player,Team
+from orm.models import State, Color, Player,Team
 
-from .query_funcs import add_color, add_player, add_state, add_team
-from .query_funcs import query1, query2, query3, query4, query5
+from query_funcs import add_color, add_player, add_state, add_team
+from query_funcs import query1, query2, query3, query4, query5
 
 #def tableInitiation(filename, connect, )
 
@@ -28,6 +28,7 @@ def teamInitiation(filename):
     data = open(filename)
     for tuple in data:
         team_id, name ,state_id, color_id, wins, losses = tuple.split(' ')
+        print(name, state_id, color_id, wins, losses)
         add_team(name, state_id, color_id, wins, losses)
     data.close()
     return
@@ -37,6 +38,7 @@ def stateInitiation(filename):
     data = open(filename)
     for tuple in data:
         state_id, name = tuple.split(' ')
+        add_state(name)
     data.close()
     return
 
@@ -45,6 +47,7 @@ def colorInitiation(filename):
     data = open(filename)
     for tuple in data:
         color_id, name= tuple.split(' ')
+        add_color(name)
     data.close()
     return
 
