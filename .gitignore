@@ -1,0 +1,11 @@
+hw5/.sneaky_mod.ko.cmd
+hw5/.sneaky_mod.mod.o.cmd
+hw5/.sneaky_mod.o.cmd
+hw5/Module.symvers
+hw5/modules.order
+hw5/sneaky_mod.ko
+hw5/sneaky_mod.mod.o
+hw5/sneaky_mod.o
+hw5/.tmp_versions/sneaky_mod.mod
+
+hw5/sneaky_process
